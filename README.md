@@ -16,12 +16,14 @@
 
 | 变量名 | 必填 | 默认值 | 说明 |
 |---|---|---|---|
-| `TOKEN` | 是 | `auto` | 订阅入口路径,如 `/auto` |
-| `KV` | 是 | - | KV 命名空间绑定,存储节点 |
-| `SUBAPI` | 否 | `sub-c.1231818.xyz` | 订阅转换后端 |
+| `TOKEN` | 是 | - | 订阅入口路径,如 `auto`(访问 `/{TOKEN}` 获取订阅) |
+| `KV` | 是 | - | KV 命名空间绑定,在「函数 → KV 命名空间绑定」中设置 |
+| `SUBAPI` | 是 | - | 订阅转换后端地址,如 `sub.example.com` |
+| `SUBCONFIG` | 否 | ACL4SSR_Online_MultiCountry | 转换规则配置文件 URL |
 | `SUBNAME` | 否 | `sub` | 订阅文件名 |
 | `SUBUPTIME` | 否 | `6` | 订阅更新间隔(小时) |
 | `ADMIN_PASSWORD` | 否 | - | 编辑页密码,不配置则不启用 |
+| `LINK` | 否 | - | 节点列表(绑定 KV 后失效) |
 
 ## 保持同步
 
