@@ -1,14 +1,14 @@
 // 汇聚订阅 Worker
 // 访问 /{TOKEN} 获取订阅,浏览器访问返回编辑页
-// 订阅转换后端默认使用 sub-c.1231818.xyz
+// 所有配置请通过 Cloudflare Pages 环境变量设置
 
-let mytoken = 'auto';                              // 订阅入口路径,建议改复杂
+let mytoken = '';                                  // 订阅入口路径,必须通过环境变量配置
 let MainData = '';                                 // 默认节点(绑定 KV 后失效)
-let subConverter = 'sub-c.1231818.xyz';            // 订阅转换后端
+let subConverter = '';                             // 订阅转换后端,必须通过环境变量配置
 let subConfig = 'https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_MultiCountry.ini';
 let subProtocol = 'https';
-let FileName = 'sub';                              // 订阅文件名
-let SUBUpdateTime = 6;                             // 订阅更新间隔(小时)
+let FileName = 'sub';                              // 订阅文件名,可留空使用默认
+let SUBUpdateTime = 6;                             // 订阅更新间隔(小时),可留空使用默认
 
 export default {
 	async fetch(request, env) {
@@ -30,6 +30,20 @@ export default {
 		subConfig = env.SUBCONFIG || subConfig;
 		FileName = env.SUBNAME || FileName;
 		SUBUpdateTime = env.SUBUPTIME || SUBUpdateTime;
+
+		// 必填变量未配置时返回错误提示
+		if (!mytoken || !subConverter) {
+			if (url.pathname === '/' || url.pathname === '/favicon.ico') {
+				return new Response(nginxHTML(), {
+					status: 200,
+					headers: { 'Content-Type': 'text/html; charset=UTF-8' }
+				});
+			}
+			const missing = [];
+			if (!mytoken) missing.push('TOKEN');
+			if (!subConverter) missing.push('SUBAPI');
+			return new Response('Error: Missing required environment variable(s): ' + missing.join(', ') + '. Please configure them in Cloudflare Pages settings.', { status: 500 });
+		}
 
 		// fakeToken:基于 TOKEN + 当天日期,供订阅转换后端回调使用,每日变化
 		const currentDate = new Date();

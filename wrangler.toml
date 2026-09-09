@@ -14,15 +14,15 @@ id = "在此填写你的 KV 命名空间 id"
 preview_id = "在此填写你的预览 KV 命名空间 id（可选）"
 
 # ============ 环境变量 ============
-# 推荐在 Cloudflare Pages 控制台 → 设置 → 环境变量 中配置
+# 所有变量请全部在 Cloudflare Pages 控制台 → 设置 → 环境变量 中配置
 # 敏感变量(如 ADMIN_PASSWORD)请使用「加密变量/Secret」类型
-[vars]
-TOKEN = "auto"
-SUBAPI = "sub-c.1231818.xyz"
-SUBCONFIG = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_MultiCountry.ini"
-SUBNAME = "sub"
-SUBUPTIME = "6"
-# ADMIN_PASSWORD = "your_password"  # 编辑页密码，建议在控制台配置为 Secret
+# [vars]
+# TOKEN = ""          # 必填,订阅入口路径,如 auto
+# SUBAPI = ""         # 必填,订阅转换后端地址,如 sub.example.com
+# SUBCONFIG = ""      # 可选,转换规则配置文件 URL,不配置使用内置 ACL4SSR 规则
+# SUBNAME = "sub"     # 可选,订阅文件名,默认 sub
+# SUBUPTIME = "6"     # 可选,更新间隔(小时),默认 6
+# ADMIN_PASSWORD = "" # 可选,编辑页密码,建议使用 Secret/加密变量
 
 # ============ 部署命令 ============
 # 本地开发:  npx wrangler dev
