@@ -397,9 +397,8 @@ async function fetchAllSub(apiList, request, appendUA, userAgentHeader) {
 
 // 编辑页(含密码保护)
 async function editPage(request, env, url, token) {
+	const currentData = env.KV ? (await env.KV.get('LINK.txt') || '') : (env.LINK || '');
 	const hasPassword = env.ADMIN_PASSWORD ? 'true' : 'false';
-	// 配置密码时页面不内嵌数据,验证通过后由前端单独拉取,防止查看源码泄露
-	const currentData = env.ADMIN_PASSWORD ? '' : (env.KV ? (await env.KV.get('LINK.txt') || '') : (env.LINK || ''));
 
 	const html = `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -596,25 +595,11 @@ function unlock() {
 		if (data.ok) {
 			localStorage.setItem('sub_pwd_' + TOKEN, document.getElementById('pwdInput').value);
 			document.getElementById('lockOverlay').classList.add('hidden');
-			loadData();
 		} else {
 			document.getElementById('pwdError').textContent = '密码错误';
 		}
 	}).catch(() => {
 		document.getElementById('pwdError').textContent = '验证失败,请重试';
-	});
-}
-
-function loadData() {
-	fetch('?action=data', {
-		method: 'POST',
-		headers: {'Content-Type': 'application/json'},
-		body: JSON.stringify({password: localStorage.getItem('sub_pwd_' + TOKEN) || ''})
-	}).then(r => r.json()).then(res => {
-		if (res.ok) {
-			document.getElementById('links').value = res.data || '';
-			updateCount();
-		}
 	});
 }
 
@@ -651,19 +636,6 @@ function copySub() {
 	if (request.method === 'POST') {
 		const body = await request.json();
 		const action = url.searchParams.get('action');
-
-		if (action === 'data') {
-			// 拉取节点数据,配置密码时需校验
-			if (env.ADMIN_PASSWORD && body.password !== env.ADMIN_PASSWORD) {
-				return new Response(JSON.stringify({ ok: false, msg: '密码错误' }), {
-					headers: { 'Content-Type': 'application/json' }
-				});
-			}
-			const data = env.KV ? (await env.KV.get('LINK.txt') || '') : (env.LINK || '');
-			return new Response(JSON.stringify({ ok: true, data }), {
-				headers: { 'Content-Type': 'application/json' }
-			});
-		}
 
 		if (action === 'verify') {
 			const ok = env.ADMIN_PASSWORD && body.password === env.ADMIN_PASSWORD;
