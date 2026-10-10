@@ -4,6 +4,17 @@
 
 ## 部署
 
+### 方式一:一键部署
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/chengege666/sub-c)
+
+1. 点击上方按钮 → Continue with GitHub 授权 → 自动 Fork 并部署
+2. 部署后进入 Workers & Pages → 你的 Worker → 设置 → 变量和机密:添加下列变量(`TOKEN`、`SUBAPI` 必填)
+3. 可选:如需在线编辑页,在 设置 → 绑定 中添加 KV 命名空间绑定(变量名 `KV`);不绑定时用 `LINK` 变量提供节点
+4. 访问 `https://你的Worker域名/{TOKEN}` 获取订阅(TOKEN 为你配置的值;绑定 KV 后浏览器访问为在线编辑页)
+
+### 方式二:Cloudflare Pages 手动部署
+
 1. Fork 或推本仓库到 GitHub
 2. Cloudflare Pages → 创建项目 → 连接 Git → 选仓库
 3. 框架预设:留空;构建命令:留空;输出目录:留空

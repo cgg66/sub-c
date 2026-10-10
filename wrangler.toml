@@ -2,16 +2,9 @@ name = "sub-c"
 main = "_worker.js"
 compatibility_date = "2024-09-01"
 
-# ============ KV 命名空间绑定 ============
-# 部署前请先创建 KV 命名空间:
-#   npx wrangler kv:namespace create LINK
-# 创建后将下方 id 替换为返回的 id
-# 也可以在 Cloudflare Pages 控制台 → 设置 → 函数 → KV 命名空间绑定 中手动绑定
-# 变量名必须为 KV
-[[kv_namespaces]]
-binding = "KV"
-id = "在此填写你的 KV 命名空间 id"
-preview_id = "在此填写你的预览 KV 命名空间 id（可选）"
+# ============ KV 命名空间(可选) ============
+# KV 为可选绑定,用于在线编辑页;不绑定时使用环境变量 LINK 提供节点
+# 需要时请在 Cloudflare 控制台 → 你的 Worker/Pages 项目 → 设置 → 绑定 中添加 KV 命名空间绑定,变量名必须为 KV
 
 # ============ 环境变量 ============
 # 所有变量请全部在 Cloudflare Pages 控制台 → 设置 → 环境变量 中配置
